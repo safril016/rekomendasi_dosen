@@ -17,7 +17,7 @@
 
 			<div class = "form-group">
 				<label>Tahun Lulus</label>
-				<input type="text" name="tahun_lulus" class="form-control" value="<?php echo $skr->tahun_lulus ?>">
+				<input type="text" name="tgl_lahir" class="form-control" value="<?php echo $skr->tahun_lulus ?>">
 			</div>
 
 			<div class = "form-group">

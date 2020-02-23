@@ -29,7 +29,7 @@ class Dosen extends CI_Controller{
 		$this->m_dosen->hapus_data($where, 'tb_dosen');
 		redirect('dosen/index');
 	}
-	public function editdosen ($id)
+	public function edit ($id)
 	{
 		$where = array ('id'=>$id);
 		$data['dosen']= $this->m_dosen->edit_data($where, 'tb_dosen')->result();

@@ -6,19 +6,25 @@
   <div class="login-box-body">
     <p class="login-box-msg">Login</p>
 
-    <form action="<?php echo site_url('auth/login/') ?>" method="post">
+    <?php if( null !== $this->session->flashdata('alert') ) : ?>
+      <div class="alert alert-danger alert-dismissible">
+        <?= $this->session->flashdata('alert'); ?>
+      </div>
+    <?php endif; ?>
+
+    <form action="" method="post">
       <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Email">
+        <input type="text" name="username" id="username" class="form-control" placeholder="Username">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Password">
+        <input type="password" name="password" id="password" class="form-control" placeholder="Password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
         <div class="col-xs-4">
-          <!-- <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button> -->
-          <a href="" class="btn btn-primary btn-block btn-flat">Sign In</a>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <!-- <a href="" class="btn btn-primary btn-block btn-flat">Sign In</a> -->
         </div>
         <!-- /.col -->
       </div>

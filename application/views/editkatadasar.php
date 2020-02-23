@@ -7,7 +7,7 @@
 			<div class = "form-group">
 				<label>kata Dasar </label>
 				<input type="hidden" name="id" class="form-control" value="<?php echo $dsr->id ?>">
-				<input type="text" name="kata_dasar" class="form-control" value="<?php echo $dsr->kata_dasar ?>">
+				<input type="text" name="kata_dasar" class="form-control" value="<?php echo $dsr->katadasar ?>">
 			</div>
 
 			<div class = "form-group">
