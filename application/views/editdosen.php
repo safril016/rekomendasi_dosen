@@ -16,15 +16,15 @@
                   <option>RPL</option>
                   <option>KBJ</option>
                   <option>KCV</option>
-                   
-                 </select>
+             </select>
+               </div>
+
+			<div class="form-group">
+				<label>Keterangan</label>
+				<input type="text" name="keterangan" class="form-control" value="<?php echo $dsn->keterangan ?>">
 			</div>
 
-			
-
 				<button type="reset" class= "btn btn-danger" >Reset</button>
-
-
 				<button type="submit" class= "btn btn-primary" >Simpan</button>
 
 			

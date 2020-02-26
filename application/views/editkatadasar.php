@@ -5,9 +5,9 @@
 		<form action= "<?php echo site_url(). '/katadasar/update'; ?>" method= "post">
 
 			<div class = "form-group">
-				<label>kata Dasar </label>
+				<label>Kata Dasar </label>
 				<input type="hidden" name="id" class="form-control" value="<?php echo $dsr->id ?>">
-				<input type="text" name="kata_dasar" class="form-control" value="<?php echo $dsr->katadasar ?>">
+				<input type="text" name="kata_dasar" class="form-control" value="<?php echo $dsr->kata_dasar ?>">
 			</div>
 
 			<div class = "form-group">
@@ -19,9 +19,7 @@
                    
                  </select>
 			</div>
-
-			
-
+	
 				<button type="reset" class= "btn btn-danger" >Reset</button>
 
 

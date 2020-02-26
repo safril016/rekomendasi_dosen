@@ -56,14 +56,15 @@
                                 <td>
                                     <?php  echo $skr->judul_skripsi ?>
                                 </td>
-                                <td onclick="javascript: return confirm('Anda yakin hapus?')">
-                                    <?php  echo anchor('skripsi/hapus/'.$skr->id, '<div class = "btn btn-danger btn-sm"><i class= "fa fa-trash"></i></div>') ?>
-                                </td>
-
                                 <td>
                                     <?php  echo anchor('skripsi/edit/'.$skr->id, '<div class = "btn btn-primary btn-sm"><i class= "fa fa-edit"></i></div>')?>
                                 </td>
 
+                                <td onclick="javascript: return confirm('Anda yakin hapus?')">
+                                    <?php  echo anchor('skripsi/hapus/'.$skr->id, '<div class = "btn btn-danger btn-sm"><i class= "fa fa-trash"></i></div>') ?>
+                                </td>
+
+                                
                             </tr>
                             <?php endforeach; ?>
                         </tbody>

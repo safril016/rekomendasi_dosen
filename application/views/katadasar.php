@@ -46,12 +46,13 @@
                                 <td>
                                     <?php  echo $dsr->kategori ?>
                                 </td>
+                                 <td>
+                                    <?php  echo anchor('katadasar/editkatadasar/'.$dsr->id, '<div class = "btn btn-primary btn-sm"><i class= "fa fa-edit"></i></div>')?>
+                                </td>
                                 <td onclick="javascript: return confirm('Anda yakin hapus?')">
                                     <?php  echo anchor('katadasar/hapus/'.$dsr->id, '<div class = "btn btn-danger btn-sm"><i class= "fa fa-trash"></i></div>') ?>
                                 </td>
-                                <td>
-                                    <?php  echo anchor('katadasar/editkatadasar/'.$dsr->id, '<div class = "btn btn-primary btn-sm"><i class= "fa fa-edit"></i></div>')?>
-                                </td>
+                               
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
