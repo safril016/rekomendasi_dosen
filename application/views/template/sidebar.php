@@ -16,8 +16,8 @@
           </a>
          
         </li>
-        <li>
-          <a href="#">
+        <li id="perhitungan_index" >
+          <a href="<?php echo site_url('perhitungan') ?>">
             <i class="fa fa-user"></i> <span>Pemilihan Dosen</span>
           </a>
          
