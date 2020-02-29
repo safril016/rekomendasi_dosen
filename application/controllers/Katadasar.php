@@ -29,7 +29,7 @@ class Katadasar extends CI_Controller{
 		$this->m_katadasar->hapus_data($where, 'tb_katadasar');
 		redirect('katadasar/index');
 	}
-	public function editkatadasar ($id)
+	public function edit ($id)
 	{
 		$where = array ('id'=>$id);
 		$data['katadasar']= $this->m_katadasar->edit_data($where, 'tb_katadasar')->result();

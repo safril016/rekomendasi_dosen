@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.2
+-- version 4.6.6deb5
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Feb 10, 2020 at 09:18 AM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.3.13
+-- Host: localhost
+-- Generation Time: 23 Feb 2020 pada 21.35
+-- Versi Server: 5.7.29-0ubuntu0.18.04.1
+-- PHP Version: 7.2.28-2+ubuntu18.04.1+deb.sury.org+2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -25,7 +23,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_dosen`
+-- Struktur dari tabel `tb_dosen`
 --
 
 CREATE TABLE `tb_dosen` (
@@ -35,7 +33,7 @@ CREATE TABLE `tb_dosen` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `tb_dosen`
+-- Dumping data untuk tabel `tb_dosen`
 --
 
 INSERT INTO `tb_dosen` (`id`, `nama`, `kategori`) VALUES
@@ -59,7 +57,7 @@ INSERT INTO `tb_dosen` (`id`, `nama`, `kategori`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_katadasar`
+-- Struktur dari tabel `tb_katadasar`
 --
 
 CREATE TABLE `tb_katadasar` (
@@ -69,7 +67,7 @@ CREATE TABLE `tb_katadasar` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `tb_katadasar`
+-- Dumping data untuk tabel `tb_katadasar`
 --
 
 INSERT INTO `tb_katadasar` (`id`, `kata_dasar`, `kategori`) VALUES
@@ -80,7 +78,7 @@ INSERT INTO `tb_katadasar` (`id`, `kata_dasar`, `kategori`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_kumpulan`
+-- Struktur dari tabel `tb_kumpulan`
 --
 
 CREATE TABLE `tb_kumpulan` (
@@ -92,7 +90,7 @@ CREATE TABLE `tb_kumpulan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `tb_kumpulan`
+-- Dumping data untuk tabel `tb_kumpulan`
 --
 
 INSERT INTO `tb_kumpulan` (`id`, `nama`, `nim`, `tahun_lulus`, `judul_skripsi`) VALUES
@@ -102,7 +100,7 @@ INSERT INTO `tb_kumpulan` (`id`, `nama`, `nim`, `tahun_lulus`, `judul_skripsi`) 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_user`
+-- Struktur dari tabel `tb_user`
 --
 
 CREATE TABLE `tb_user` (
@@ -113,11 +111,11 @@ CREATE TABLE `tb_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `tb_user`
+-- Dumping data untuk tabel `tb_user`
 --
 
 INSERT INTO `tb_user` (`id`, `nama_user`, `username`, `password`) VALUES
-(1, 'admin', 'admin', 'admin');
+(1, 'admin', 'admin', '$2y$10$q7G9WyUWtItogXnbRroy2OuK9gU.sm5mtc9jv7T0r4bQWoUU7Zn76');
 
 --
 -- Indexes for dumped tables
@@ -156,26 +154,21 @@ ALTER TABLE `tb_user`
 --
 ALTER TABLE `tb_dosen`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
-
 --
 -- AUTO_INCREMENT for table `tb_katadasar`
 --
 ALTER TABLE `tb_katadasar`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
 --
 -- AUTO_INCREMENT for table `tb_kumpulan`
 --
 ALTER TABLE `tb_kumpulan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
 --
 -- AUTO_INCREMENT for table `tb_user`
 --
 ALTER TABLE `tb_user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-COMMIT;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

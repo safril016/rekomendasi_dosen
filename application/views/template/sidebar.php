@@ -17,7 +17,7 @@
          
         </li>
         <li>
-          <a href="<?php echo site_url('pemdos') ?>">
+          <a href="#">
             <i class="fa fa-user"></i> <span>Pemilihan Dosen</span>
           </a>
          
