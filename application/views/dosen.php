@@ -29,8 +29,9 @@
                     <table class="table table-bordered table-striped table-responsive bg-gray">
                         <thead>
                             <th>No</th>
-                            <th>Nama </th>
+                            <th>Nama</th>
                             <th>Kategori</th>
+                            <th>Keterangan</th>
                             <th colspan="2">Aksi</th>
                         </thead>
                         <tbody>
@@ -48,13 +49,15 @@
                                 <td>
                                     <?php  echo $dsn->kategori ?>
                                 </td>
-                            
-                                <td onclick="javascript: return confirm('Anda yakin hapus?')">
-                                    <?php  echo anchor('dosen/hapus/'.$dsn->id, '<div class = "btn btn-danger btn-sm"><i class= "fa fa-trash"></i></div>') ?>
+                                <td>
+                                    <?php  echo $dsn->keterangan ?>
                                 </td>
-
+                            
                                 <td>
                                     <?php  echo anchor('dosen/editdosen/'.$dsn->id, '<div class = "btn btn-primary btn-sm"><i class= "fa fa-edit"></i></div>')?>
+                                </td>
+                                <td onclick="javascript: return confirm('Anda yakin hapus?')">
+                                    <?php  echo anchor('dosen/hapus/'.$dsn->id, '<div class = "btn btn-danger btn-sm"><i class= "fa fa-trash"></i></div>') ?>
                                 </td>
 
                             </tr>
@@ -88,11 +91,14 @@
                             <div class="form-group">
                                 <label>Kategori</label>
                                 <select class = "form-control" name= "kategori" >
-                                <option>RPL</option> 
+                                <option>RPL</option>
                                 <option>KBJ</option>
                                 <option>KCV</option>
-                    
-                    </select>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Keterangan</label>
+                                <input type="text" name="keterangan" class="form-control">
                             </div>
 
                         

@@ -14,10 +14,12 @@ class Dosen extends CI_Controller{
 	public function tambah_aksi(){
 		$nama				= $this->input->post('nama');
 		$kategori			= $this->input->post('kategori');
+		$keterangan			= $this->input->post('keterangan');
 		
 		$data = array(
 				'nama'			=> $nama,
 				'kategori'		=> $kategori,
+				'keterangan'	=> $keterangan,
 				
 		);
 		$this->m_dosen->input_data($data, 'tb_dosen');
@@ -29,7 +31,7 @@ class Dosen extends CI_Controller{
 		$this->m_dosen->hapus_data($where, 'tb_dosen');
 		redirect('dosen/index');
 	}
-	public function edit ($id)
+	public function editdosen ($id)
 	{
 		$where = array ('id'=>$id);
 		$data['dosen']= $this->m_dosen->edit_data($where, 'tb_dosen')->result();
@@ -44,10 +46,12 @@ class Dosen extends CI_Controller{
 		$id= $this->input->post('id');
 		$nama= $this->input->post('nama');
 		$kategori= $this->input->post('kategori');
+		$keterangan= $this->input->post('keterangan');
 		
 			$data = array(
 				'nama'			=> $nama,
-				'kategori'		=> $kategori
+				'kategori'		=> $kategori,
+				'keterangan'	=> $keterangan
 		
 		);
 
