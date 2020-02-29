@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/skripsi';   //disini bisa site bisa base(asset)
+$config['base_url'] = 'http://localhost/rekomendasi_dosen';   //disini bisa site bisa base(asset)
 
 /*
 |--------------------------------------------------------------------------
