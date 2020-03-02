@@ -1,10 +1,16 @@
 <?php 
 
 class Perhitungan extends CI_Controller{
+	public function __construct()
+	{
+		parent::__construct();
+		if( !$this->session->userdata('id') ) redirect('auth/login');
+	}
 	public function index()
 	{
 		$origin['menu_list_id'] = 'perhitungan_index';
 		$data['dosen']= $this->m_dosen->tampil_data()-> result();
+		$data['skripsi'] = $this->m_skripsi->tampil_data_skripsi()->result();
 		$this->load->view('template/header', $origin);
 		$this->load->view('template/sidebar');
 		$this->load->view('rekomendasi_form', $data);
@@ -56,9 +62,13 @@ class Perhitungan extends CI_Controller{
 		// echo var_dump( $a ) ;
 	}
 	public function proses(){
-		$data_recomendation['name']					= $this->input->post('name');
-		$data_recomendation['registration_number']	= $this->input->post('registration_number');
-		$data_recomendation['title']				= strtolower( $this->input->post('title') );
+		$nama = $this->input->post('name');
+		$nim = $this->input->post('registration_number');
+		$judul = $this->input->post('title');
+
+		$data_recomendation['name']					= $nama;
+		$data_recomendation['registration_number']	= $nim;
+		$data_recomendation['title']				= strtolower( $judul );
 
 		$arrayDoc = array();
 		foreach( $this->m_katadasar->tampil_data()-> result() as $item )
@@ -99,11 +109,11 @@ class Perhitungan extends CI_Controller{
 			{
 				$data[$keyName] = $result;
 				$k = $k + 1;
-				echo "<p style='color:green;'>found for ".$val."</p>";
+				// echo "<p style='color:green;'>found for ".$val."</p>";
 
 			}
-			else 
-				echo "<p style='color:red;'>No result found for ".$val."</p>";
+			// else 
+			// 	echo "<p style='color:red;'>No result found for ".$val."</p>";
 		}
 
 		$k = 1;
@@ -141,20 +151,112 @@ class Perhitungan extends CI_Controller{
 		$time_end = microtime(true);
 		$time = $time_end - $time_start;
 
-		echo "<br /><br />Search time is : <b> ".round($time,2)." microseconds</b>";
-		echo "<br />Total documents retrieved: <b>".count($sortedArray)."</b>";
+		// echo "<br /><br />Search time is : <b> ".round($time,2)." microseconds</b>";
+		// echo "<br />Total documents retrieved: <b>".count($sortedArray)."</b>";
 
 		foreach ($sortedArray as $key=>$val)
 		{
-			echo "<div style='background-color: #F5F5F5;
-			margin-top: 2px;
-			border-bottom-style: solid;
-			border-bottom-width: thin;
-			height: 50px;
-			padding-left: 10px;	' ><p class='b1'><b>Doc ID: </b>".$key."</p><p class='b2'><b>BM25 score: </b>".$finalArray[$key]['bm25_score']."</p><p class='b3'><b>Term Freq.: </b>".$finalArray[$key]['tf']."</p><p class='b4'><b>Doc. Freq.: </b>".$finalArray[$key]['df']."</p></div>";
+			$peminatan = $key;
+			// echo "<div style='background-color: #F5F5F5;
+			// margin-top: 2px;
+			// border-bottom-style: solid;
+			// border-bottom-width: thin;
+			// height: 50px;
+			// padding-left: 10px;	' ><p class='b1'><b>Doc ID: </b>".$key."</p><p class='b2'><b>BM25 score: </b>".$finalArray[$key]['bm25_score']."</p><p class='b3'><b>Term Freq.: </b>".$finalArray[$key]['tf']."</p><p class='b4'><b>Doc. Freq.: </b>".$finalArray[$key]['df']."</p></div>";
 		}
+		// echo "<br>";
+		// echo "<br>";
+		// echo "<br>";
+		// echo "<br>";
+		// echo "<br>";
+		// echo "<br>";
+		// echo "<br>";
+		// echo "<br>";
+		// echo "<br>";
+		// dosen pembimbing 1, penguji 1
+		$keterangan = "Lektor";
+		$list_dosen_ketua = $this->m_dosen->dosen_berdasarkan_peminatan( $peminatan, $keterangan )->result();
+		foreach ($list_dosen_ketua as $key => $dosen) {
+			$dosen_id[] = $dosen->id;
+		}
+		// dosen 2, 4, 5
+		$list_dosen = $this->m_dosen->dosen_berdasarkan_peminatan( $peminatan, NULL, $dosen_id[0], $dosen_id[1] )->result();
+
+		// urut dosen
+		$data['nama'] = $nama;
+		$data['nim'] = $nim;
+		$data['judul'] = $judul;
+		$data['peminatan'] = $peminatan;
+		$data['rekomendasi_dosen'] = array(
+			$list_dosen_ketua[0],
+			$list_dosen[0],
+			$list_dosen_ketua[1],
+			$list_dosen[1],
+			$list_dosen[2],
+		);
+
+		$dosens = $this->m_dosen->tampil_data()->result();
+		foreach ($dosens as $key => $dsn) {
+			$select_dosen[ $dsn->id ] = $dsn->nama;
+		}
+		// hilangkan dosen yang sudah ada
+		foreach ($data['rekomendasi_dosen'] as $key => $dsn) {
+			unset( $select_dosen[ $dsn->id ] );
+		}
+		$data['list_dosen'] = $select_dosen;
+		
+
+		$origin['menu_list_id'] = 'perhitungan_index';
+		$this->load->view('template/header', $origin);
+		$this->load->view('template/sidebar');
+		$this->load->view('tampil_saran', $data);
+		$this->load->view('template/footer');
 	} 
 
+	public function tambah_skripsi(  )
+	{
+		$skripsi = array(
+			'nama' => $this->input->post('nama'),
+			'nim' => $this->input->post('nim'),
+			'judul_skripsi' => $this->input->post('judul'),
+		);
+		$this->m_skripsi->tambah_data( $skripsi );
+		$dosen = $this->m_skripsi->skripsi_terbaru()->row();
+
+		for ($i=1; $i < 6; $i++) { 
+			$data[] = array(
+				'skripsi_id' => $dosen->id,
+				'dosen_id' => $this->input->post('dosen_id' . $i),
+				'keterangan' => NULL
+			);
+		}
+		$this->m_skripsi->tambah_data_relasi( $data );
+		redirect('perhitungan');
+	}
+
+	public function dosen( $skripsi_id )
+	{
+		$origin['menu_list_id'] = 'perhitungan_index';
+		$data['dosen']= $this->m_seminar->tampil_data( $skripsi_id )-> result();
+		$this->load->view('template/header', $origin);
+		$this->load->view('template/sidebar');
+		$this->load->view('dosen_seminar', $data);
+		$this->load->view('template/footer');
+	}
+
+	public function hapus( $skripsi_id )
+	{
+		// hapus di tabel seminar
+		$where['skripsi_id'] = $skripsi_id;
+		$this->m_seminar->hapus_data( $where, 'tb_seminar' );
+
+		// hapus di tabel skripsi
+		$where = array(
+			'id' => $skripsi_id
+		);
+		$this->m_skripsi->hapus_data( $where, 'tb_skripsi' );
+		redirect('perhitungan');
+	}
 
 	public function removeDuplicateElements($content)
 	{

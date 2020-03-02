@@ -1,6 +1,11 @@
 <?php 
 
 class Skripsi extends CI_Controller{
+	public function __construct()
+	{
+		parent::__construct();
+		if( !$this->session->userdata('id') ) redirect('auth/login');
+	}
 	public function index()
 	{
 		$origin['menu_list_id'] = 'skripsi_index';

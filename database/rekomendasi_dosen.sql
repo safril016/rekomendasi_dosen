@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.2
+-- version 4.6.6deb5
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Feb 29, 2020 at 06:29 PM
--- Server version: 10.1.34-MariaDB
--- PHP Version: 7.2.8
+-- Host: localhost
+-- Generation Time: Mar 03, 2020 at 02:27 AM
+-- Server version: 5.7.29-0ubuntu0.18.04.1
+-- PHP Version: 7.2.28-3+ubuntu18.04.1+deb.sury.org+1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -45,13 +43,13 @@ INSERT INTO `tb_dosen` (`id`, `nama`, `kategori`, `keterangan`) VALUES
 (8, 'Bambang Pramono, S.Si.,M.T.  ', 'RPL', 'Lektor'),
 (9, 'L.M. Tajidun, S.T., M.Eng.', 'RPL', 'Penata Muda'),
 (10, 'Natalis Ransi, S.Si., M.Cs.', 'RPL', 'Penata Muda'),
-(11, 'Ika Purwanti. Ningrum Purnama, S.Kom., M.Cs', 'RPL', 'Lektor'),
-(12, 'Dr. Ir. H. Muhammad Ihsan Sarita, M.Kom.', 'RPL', 'Lektor'),
+(11, 'Ika Purwanti. Ningrum Purnama, S.Kom., M.Cs', 'KCV', 'Lektor'),
+(12, 'Dr. Ir. H. Muhammad Ihsan Sarita, M.Kom.', 'KCV', 'Lektor'),
 (13, 'La Ode Muhammad Bahtiar Aksara', 'KCV', 'Penata Muda'),
-(14, 'Adha Mashur Sajiah, S.T., M.Eng.', 'RPL', 'Penata Muda'),
+(14, 'Adha Mashur Sajiah, S.T., M.Eng.', 'KCV', 'Penata Muda'),
 (15, 'Muh. Yamin, S.T., M.Eng.', 'KBJ', 'Lektor'),
 (16, 'Isnawaty, S.Si., M.T.', 'KBJ', 'Lektor'),
-(17, 'L. M. Fid Aksara, S.Kom., M. Kom.', 'RPL', 'Penata Muda'),
+(17, 'L. M. Fid Aksara, S.Kom., M. Kom.', 'KBJ', 'Penata Muda'),
 (18, 'Subardin, S.T., M.T.', 'KBJ', 'Penata Muda'),
 (19, 'La Surimi, S.Si., M.Cs.', 'KBJ', 'Penata Muda'),
 (20, 'Jumadil Nangi, S.Kom., M.T.', 'RPL', 'Penata Muda'),
@@ -388,6 +386,50 @@ INSERT INTO `tb_kumpulan` (`id`, `nama`, `nim`, `tahun_lulus`, `judul_skripsi`) 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tb_seminar`
+--
+
+CREATE TABLE `tb_seminar` (
+  `id` int(11) NOT NULL,
+  `skripsi_id` int(11) NOT NULL,
+  `dosen_id` int(11) NOT NULL,
+  `keterangan` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tb_seminar`
+--
+
+INSERT INTO `tb_seminar` (`id`, `skripsi_id`, `dosen_id`, `keterangan`) VALUES
+(11, 12, 11, ''),
+(12, 12, 8, ''),
+(13, 12, 12, ''),
+(14, 12, 6, ''),
+(15, 12, 14, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_skripsi`
+--
+
+CREATE TABLE `tb_skripsi` (
+  `id` int(11) NOT NULL,
+  `nama` varchar(30) NOT NULL,
+  `nim` varchar(10) NOT NULL,
+  `judul_skripsi` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tb_skripsi`
+--
+
+INSERT INTO `tb_skripsi` (`id`, `nama`, `nim`, `judul_skripsi`) VALUES
+(12, 'a', 'a', 'SISTEM PENDETEKSI JUMLAH MOBIL DALAM INTELLIGENT TRANSPORT SYSTEM (ITS) MENGGUNAKAN METODE VIOLA JONES');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tb_user`
 --
 
@@ -428,6 +470,18 @@ ALTER TABLE `tb_kumpulan`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tb_seminar`
+--
+ALTER TABLE `tb_seminar`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tb_skripsi`
+--
+ALTER TABLE `tb_skripsi`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tb_user`
 --
 ALTER TABLE `tb_user`
@@ -442,26 +496,31 @@ ALTER TABLE `tb_user`
 --
 ALTER TABLE `tb_dosen`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-
 --
 -- AUTO_INCREMENT for table `tb_katadasar`
 --
 ALTER TABLE `tb_katadasar`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
 --
 -- AUTO_INCREMENT for table `tb_kumpulan`
 --
 ALTER TABLE `tb_kumpulan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=288;
-
+--
+-- AUTO_INCREMENT for table `tb_seminar`
+--
+ALTER TABLE `tb_seminar`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+--
+-- AUTO_INCREMENT for table `tb_skripsi`
+--
+ALTER TABLE `tb_skripsi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `tb_user`
 --
 ALTER TABLE `tb_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-COMMIT;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
