@@ -4,6 +4,15 @@
 
  	public function tampil_data()
  	{
+ 		$this->db->select('tb_dosen.*');
+ 		$this->db->select("SUM(CASE WHEN tb_seminar.keterangan = 'Pembimbing' THEN 1 ELSE 0 END ) AS jumlah_bimbing");
+ 		$this->db->select("SUM(CASE WHEN tb_seminar.keterangan = 'Penguji' THEN 1 ELSE 0 END ) AS jumlah_uji");
+ 		$this->db->join(
+ 			'tb_seminar',
+ 			'tb_seminar.dosen_id = tb_dosen.id',
+ 			'left'
+ 		);
+ 		$this->db->group_by('tb_dosen.id');
  		return $this->db->get('tb_dosen');
  	}
 

@@ -32,10 +32,12 @@
                             <th>Judul Skripsi</th>
                             <td><?= $judul ?></td>
                         </tr>
-                        <!-- <tr>
-                            <th>Peminatan</th>
-                            <td><?= $peminatan ?></td>
-                        </tr> -->
+                        <tr>
+                            <th>Skor</th>
+                            <td><?php foreach ($score as $key => $skor) {
+                                echo $skor;
+                            } ?></td>
+                        </tr>
                     </tbody>
                 </table>
                 <form action="<?= site_url('perhitungan/tambah_skripsi') ?>" method="post">

@@ -54,8 +54,13 @@
                                 </td>
                                 <td>
                                     <?php  echo anchor('perhitungan/dosen/'.$skr->id, '<div class = "btn btn-primary btn-sm"><i class= "fa fa-eye"></i></div>')?>
+                                <td>
+
                                     <?php  echo anchor('perhitungan/hapus/'.$skr->id, '<div class = "btn btn-danger btn-sm" onclick="javascript: return confirm(\'Anda yakin hapus?\')"><i class= "fa fa-trash"></i></div>')?>
-                                </td>                                
+
+
+                               </td> 
+                               </td>                               
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -70,7 +75,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="exampleModalLabel">Form Input Skripsi</h4>
+                        <h4 class="modal-title" id="exampleModalLabel">Form Input Judul</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

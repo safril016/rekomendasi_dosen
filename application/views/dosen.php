@@ -32,6 +32,8 @@
                             <th>Nama</th>
                             <th>Kategori</th>
                             <th>Keterangan</th>
+                            <th>Membimbing</th>
+                            <th>Menguji</th>
                             <th colspan="2">Aksi</th>
                         </thead>
                         <tbody>
@@ -52,7 +54,12 @@
                                 <td>
                                     <?php  echo $dsn->keterangan ?>
                                 </td>
-                            
+                                <td>
+                                    <?php  echo $dsn->jumlah_bimbing ?>
+                                </td>
+                                <td>
+                                    <?php  echo $dsn->jumlah_uji ?>
+                                </td>
                                 <td>
                                     <?php  echo anchor('dosen/editdosen/'.$dsn->id, '<div class = "btn btn-primary btn-sm"><i class= "fa fa-edit"></i></div>')?>
                                 </td>

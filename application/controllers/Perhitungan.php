@@ -109,9 +109,9 @@ class Perhitungan extends CI_Controller{
 			{
 				$data[$keyName] = $result;
 				$k = $k + 1;
+				// tampilan bila kata ditemukan dan tdak
 				// echo "<p style='color:green;'>found for ".$val."</p>";
-
-			}
+	}
 			// else 
 			// 	echo "<p style='color:red;'>No result found for ".$val."</p>";
 		}
@@ -157,21 +157,17 @@ class Perhitungan extends CI_Controller{
 		foreach ($sortedArray as $key=>$val)
 		{
 			$peminatan = $key;
+			$score[] = $finalArray[$key]['bm25_score'] . ' -> ' . $key . ' --  ';
+			// Menampilkan Hasil dari BM25 (Kata Dasar)
 			// echo "<div style='background-color: #F5F5F5;
 			// margin-top: 2px;
 			// border-bottom-style: solid;
 			// border-bottom-width: thin;
 			// height: 50px;
 			// padding-left: 10px;	' ><p class='b1'><b>Doc ID: </b>".$key."</p><p class='b2'><b>BM25 score: </b>".$finalArray[$key]['bm25_score']."</p><p class='b3'><b>Term Freq.: </b>".$finalArray[$key]['tf']."</p><p class='b4'><b>Doc. Freq.: </b>".$finalArray[$key]['df']."</p></div>";
+			// die;
 		}
-		// echo "<br>";
-		// echo "<br>";
-		// echo "<br>";
-		// echo "<br>";
-		// echo "<br>";
-		// echo "<br>";
-		// echo "<br>";
-		// echo "<br>";
+		
 		// echo "<br>";
 		// dosen pembimbing 1, penguji 1
 		$keterangan = "Lektor";
@@ -183,6 +179,7 @@ class Perhitungan extends CI_Controller{
 		$list_dosen = $this->m_dosen->dosen_berdasarkan_peminatan( $peminatan, NULL, $dosen_id[0], $dosen_id[1] )->result();
 
 		// urut dosen
+		$data['score'] = $score;
 		$data['nama'] = $nama;
 		$data['nim'] = $nim;
 		$data['judul'] = $judul;
@@ -222,12 +219,12 @@ class Perhitungan extends CI_Controller{
 		);
 		$this->m_skripsi->tambah_data( $skripsi );
 		$dosen = $this->m_skripsi->skripsi_terbaru()->row();
-
+		$keterangan = ['', 'Pembimbing 1', 'Pembimbing 2', 'Penguji 1', 'Penguji 2', 'Penguji 3'];
 		for ($i=1; $i < 6; $i++) { 
 			$data[] = array(
 				'skripsi_id' => $dosen->id,
 				'dosen_id' => $this->input->post('dosen_id' . $i),
-				'keterangan' => NULL
+				'keterangan' => $keterangan[$i],
 			);
 		}
 		$this->m_skripsi->tambah_data_relasi( $data );
