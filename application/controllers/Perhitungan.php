@@ -219,7 +219,7 @@ class Perhitungan extends CI_Controller{
 		);
 		$this->m_skripsi->tambah_data( $skripsi );
 		$dosen = $this->m_skripsi->skripsi_terbaru()->row();
-		$keterangan = ['', 'Pembimbing 1', 'Pembimbing 2', 'Penguji 1', 'Penguji 2', 'Penguji 3'];
+		$keterangan = ['', 'Pembimbing', 'Pembimbing', 'Penguji', 'Penguji', 'Penguji'];
 		for ($i=1; $i < 6; $i++) { 
 			$data[] = array(
 				'skripsi_id' => $dosen->id,
