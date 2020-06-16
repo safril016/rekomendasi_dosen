@@ -23,7 +23,7 @@ class Perhitungan extends CI_Controller{
 		{
 			$arrayDoc [ $item->kategori ]= $item->kata_dasar;
 		}
-		// echo var_dump( $arrayDoc );
+		echo json_encode( $arrayDoc );
 		$arrIndex = array();
 		foreach( $arrayDoc as $category => $doc )
 		{
@@ -59,7 +59,8 @@ class Perhitungan extends CI_Controller{
 		// echo '<br>';
 		// echo '<br>';
 		// $a = explode( ' ', $txt );
-		// echo var_dump( $a ) ;
+		// echo echo json_encode( $a ) ;
+		redirect('katadasar/index');
 	}
 	public function proses(){
 		$nama = $this->input->post('name');
@@ -76,10 +77,10 @@ class Perhitungan extends CI_Controller{
 			$arrayDoc []= $item->kata_dasar;
 		}
 		// die;
-		// echo var_dump( $this->m_katadasar->tampil_data()-> result() );
+		// echo echo json_encode( $this->m_katadasar->tampil_data()-> result() );
 		// echo '<br>';
 		// echo '<br>';
-		// echo var_dump( $arrayDoc );
+		// echo echo json_encode( $arrayDoc );
 		// echo '<br>';
 		// echo '<br>';
 		// die;
@@ -96,7 +97,7 @@ class Perhitungan extends CI_Controller{
 
 		$tokens = $this->removeStopWords($tokens);
 
-		$tokens = $this->removeNumericTokens($tokens);
+		// $tokens = $this->removeNumericTokens($tokens);
 
 		$k = 1;
 		foreach ($tokens as $val)
@@ -110,18 +111,24 @@ class Perhitungan extends CI_Controller{
 				$data[$keyName] = $result;
 				$k = $k + 1;
 				// tampilan bila kata ditemukan dan tdak
-				// echo "<p style='color:green;'>found for ".$val."</p>";
-	}
+				// echo "<p style='color:green;'>found for ".$val.' index : '.$result."</p>";
+			}
 			// else 
 			// 	echo "<p style='color:red;'>No result found for ".$val."</p>";
 		}
-
+		// echo "tokens<br>";
+		// echo json_encode($data);
+		// echo "<br>";
+		// echo "<br>";
+		// die;
 		$k = 1;
 		foreach ($data as $val)
 		{
 			$keyName = "q".$k;
-			
-			$set = explode(",", $val);
+			// echo var_dump($val);
+			// echo "<br>";
+			$set = explode(" ", $val);
+			// $set = explode(",", $val);
 			$df = count($set);
 			
 			foreach ($set as $v)
@@ -132,32 +139,50 @@ class Perhitungan extends CI_Controller{
 			}
 			$k = $k + 1;
 		}
+		// die;
+
+		// echo "ready<br>";
+		// echo json_encode($ready);
+		// echo "<br>";
+		// echo "<br>";
 
 		$finalArray = Array();
 		//Merging each query arrays into one 1 array
-		foreach ($ready as $m)
+		foreach ($ready as $key => $m)
 		{
-			$finalArray = $this->mergeArrays($finalArray,$m);
+			$finalArray = $this->new_mergeArrays($finalArray,$m, $key );
 		}
 
+		// echo "finalArray<br>";
+		// echo json_encode($finalArray);
+		// echo "<br>";
+		// echo "<br>";
 		// Getting BM25 scores of each documents
-		foreach ($finalArray as $key=>$fdata) {
-			$finalArray[$key]['bm25_score'] = $this->BM25($finalArray[$key]['df'], $finalArray[$key]['tf'], $finalArray[$key]);
-			$sortedArray[$key] = $finalArray[$key]['bm25_score'];
-		}
+		foreach ($finalArray as $document=>$fdata) {
 
-		arsort($sortedArray);
+			$finalArray[$document]['bm25_score'] = $this->new_BM25( $fdata, $document );
+			// echo "<br>";
+			// echo $finalArray[$document]['bm25_score'];
+			// echo "<br>";
+			$sortedArray[$document] = $finalArray[$document]['bm25_score'];
+		}
+		// die;
+
+
+		asort($sortedArray);
 
 		$time_end = microtime(true);
 		$time = $time_end - $time_start;
 
 		// echo "<br /><br />Search time is : <b> ".round($time,2)." microseconds</b>";
 		// echo "<br />Total documents retrieved: <b>".count($sortedArray)."</b>";
-
+		// echo json_encode($sortedArray);
+		// die;
 		foreach ($sortedArray as $key=>$val)
 		{
 			$peminatan = $key;
-			$score[] = $finalArray[$key]['bm25_score'] . ' -> ' . $key . ' --  ';
+			$score[] = number_format($finalArray[$key]['bm25_score'],2) . ' -> ' . $key . ' --  ';
+
 			// Menampilkan Hasil dari BM25 (Kata Dasar)
 			// echo "<div style='background-color: #F5F5F5;
 			// margin-top: 2px;
@@ -167,8 +192,11 @@ class Perhitungan extends CI_Controller{
 			// padding-left: 10px;	' ><p class='b1'><b>Doc ID: </b>".$key."</p><p class='b2'><b>BM25 score: </b>".$finalArray[$key]['bm25_score']."</p><p class='b3'><b>Term Freq.: </b>".$finalArray[$key]['tf']."</p><p class='b4'><b>Doc. Freq.: </b>".$finalArray[$key]['df']."</p></div>";
 			// die;
 		}
+		// echo json_encode($peminatan);
+		// die;
 		
 		// echo "<br>";
+
 		// dosen pembimbing 1, penguji 1
 		$keterangan = "Lektor";
 		$list_dosen_ketua = $this->m_dosen->dosen_berdasarkan_peminatan( $peminatan, $keterangan )->result();
@@ -209,6 +237,109 @@ class Perhitungan extends CI_Controller{
 		$this->load->view('tampil_saran', $data);
 		$this->load->view('template/footer');
 	} 
+
+	public function idf( $N, $Nqi )
+	{
+		// echo 'N : '.json_encode( $N - $Nqi + 0.5 );
+		// echo '<br>';	
+		// echo 'Nqi : '.json_encode( ($N - $Nqi + 0.5) / ($Nqi + 0.5) );
+		// echo '<br>';	
+		$x = ($N - $Nqi + 0.5) / ($Nqi + 0.5);
+		return abs( log10( $x ) );
+	}
+	public function new_BM25( $datas, $_document )
+	{	
+		// $content = file_get_contents("content/".$did.".txt"); // reading giving document
+		$where = array ('kategori'=>$_document);
+		$content = $this->m_katadasar->edit_data($where, 'tb_katadasar')->result();
+		// echo json_encode( $content );
+		// echo '<br>';
+		//$doc_length = strlen($content); // length of the giving document
+		$tokens_content = explode(' ', $content);
+		$tokens_content = $this->removeDuplicateElements($tokens_content);
+		$tokens_content = $this->stripPunctuations($tokens_content);
+		$tokens_content = $this->removeStopWords($tokens_content);
+		// $tokens_content = $this->removeNumericTokens($tokens_content);
+		$doc_length = count($tokens_content);	
+		
+		 // initializing bm25 score variable
+		$tfWeight = 1.2; // Term frequency weightage -> k1
+		$dlWeight = 0.75; // Document frequency weightage -> b
+		$total_docs = 3; // Total number of documents in the corpus
+
+		$docs = $this->m_katadasar->tampil_data()->result();
+		$sum = 0 ;
+		foreach ($docs as $value) {
+			$x = explode(' ', $value->kata_dasar);
+			$sum += count( $x );
+		}
+		$avg_dl = $sum / 3; // average document length of corpus with normalization of tokens
+		// echo 'avg_dl : '.$avg_dl .'<br>';
+		// echo '<br>';
+
+		$sum_BM25 = 0;
+		foreach ($datas as $key => $data) {
+			// echo json_encode( [ $key, $data ] );
+			// echo '<br>';
+			$idf = $this->idf( $total_docs , $data['df'] );
+			// echo 'idf : '.$idf;
+			// echo '<br>';
+			$num = ($tfWeight + 1) * $data['tf'] ;
+			// echo 'num : '.$num ;
+			// echo '<br>';
+			$denom = $tfWeight * ((1 - $dlWeight) + $dlWeight * ($doc_length / $avg_dl)) + $data['tf'];
+			// echo 'denom : '.$denom ;
+			// echo '<br>';
+			$bm25 = $idf * ($num/$denom);
+			// echo 'bm25 : '.$bm25;
+			// echo '<br>';
+			$sum_BM25 += $bm25;
+
+		}
+		// echo '<br>';
+		// echo 'total score : '.$sum_BM25;
+		// echo '<br>';
+
+		return $sum_BM25;
+		
+	}
+
+	// This function is mering query terms arrays in to one array
+	// Function used in queryManager.php
+	public function new_mergeArrays($main,$temp, $_key)
+	{
+		// echo json_encode($_key);
+		// echo "<br>";	
+
+		foreach ($temp as $doc=>$val)
+		{
+			// echo json_encode($key);
+			// echo "<br>";
+			if(array_key_exists($doc, $main) == TRUE)
+			{	
+				if(array_key_exists( $_key, $main[$doc] ) == TRUE)
+				{	
+					$main[$doc][$_key]['tf'] = $main[$doc][$_key]['tf'] + $temp[$doc]['tf'];		
+					$main[$doc][$_key]['df'] = $main[$doc][$_key]['df'] + $temp[$doc]['df'];
+				}
+				else
+				{
+					$main[$doc][$_key]['tf'] = $temp[$doc]['tf'];		
+					$main[$doc][$_key]['df'] = $temp[$doc]['df'];
+				}
+				
+			}
+			else
+			{
+				$main[$doc][$_key] = 
+				[
+					'tf' => $temp[$doc]['tf'],
+					'df' => $temp[$doc]['df'],
+				];
+			}	
+		}
+		return $main;		
+	}
 
 	public function tambah_skripsi(  )
 	{
@@ -277,7 +408,7 @@ class Perhitungan extends CI_Controller{
 
 	public function stripPunctuations($content)
 	{
-		$whatToStrip = array("?","!",",",";",'"','"...', '(', ')' );
+		$whatToStrip = array("?","!",",",";",'"','"...', '(', ')','-');
 		
 		foreach ($content as $k=>$val)
 		{
@@ -347,53 +478,6 @@ class Perhitungan extends CI_Controller{
 		}	
 	}
 
-	// This function is mering query terms arrays in to one array
-	// Function used in queryManager.php
-	public function mergeArrays($main,$temp)
-	{
-		foreach ($temp as $key=>$val)
-		{
-			if(array_key_exists($key, $main) == TRUE)
-			{	
-				$main[$key]['tf'] = $main[$key]['tf'] + $temp[$key]['tf'];		
-				$main[$key]['df'] = $main[$key]['df'] + $temp[$key]['df'];
-			}
-			else
-			{
-				$main[$key]['tf'] = $temp[$key]['tf'];
-				$main[$key]['df'] = $temp[$key]['df'];
-			}	
-		}
-		return $main;		
-	}
-
-	// This function calculated the bm25 scores of the document against givent query
-	public function BM25($df,$tf,$did)
-	{	
-		$content = file_get_contents("content/".$did.".txt"); // reading giving document
-		//$doc_length = strlen($content); // length of the giving document
-		$tokens_content = explode(' ', $content);
-		$tokens_content = $this->removeDuplicateElements($tokens_content);
-		$tokens_content = $this->stripPunctuations($tokens_content);
-		$tokens_content = $this->removeStopWords($tokens_content);
-		$tokens_content = $this->removeNumericTokens($tokens_content);
-		$doc_length = count($tokens_content);	
-		
-		
-		$BM25 = 0; // initializing bm25 score variable
-		$tfWeight = 1; // Term frequency weightage
-		$dlWeight = 0.5; // Document frequency weightage
-		$total_docs = 3; // Total number of documents in the corpus
-		//$avg_dl = 123; // average document length of corpus without normalization of tokens
-		$avg_dl = 40.42; // average document length of corpus with normalization of tokens
-		
-		$idf = log($total_docs/$df);
-		$num = ($tfWeight + 1) * $tf;
-		$denom = $tfWeight * ((1 - $dlWeight) + $dlWeight * ($doc_length / $avg_dl)) + $tf;
-		$score = $idf * ($num/$denom);
-		
-		return $score;
-	}
 
 }
 

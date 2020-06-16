@@ -41,8 +41,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse pull-right" id="navbar-collapse">
           <ul class="nav navbar-nav">
-            <li id="home_index" ><a href="<?php echo site_url() ?>">Panduan TA <span class="sr-only">(current)</span></a></li>
-            <li id="home_dosen"><a href="<?php echo site_url('home/dosen/') ?>">Dosen IT</a></li>
+            <!-- <li id="home_index" ><a href="<?php echo site_url() ?>">Panduan TA <span class="sr-only">(current)</span></a></li> -->
+            <!-- <li id="home_dosen"><a href="<?php echo site_url('home/dosen/') ?>">Dosen IT</a></li> -->
             <li id="auth_login" class="dropdown user user-menu">
                 <a href="<?php echo site_url('auth/login') ?>">
                 <span class="fa fa-sign-in">  Login</span>

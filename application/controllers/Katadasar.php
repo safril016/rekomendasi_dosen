@@ -60,7 +60,7 @@ class Katadasar extends CI_Controller{
 			'id'=> $id
 		);
 		$this->m_katadasar->update_data($where, $data, 'tb_katadasar');
-		redirect('katadasar/index');
+		redirect('perhitungan/indexing');
 	}
 }
 
