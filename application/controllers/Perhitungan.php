@@ -201,6 +201,8 @@ class Perhitungan extends CI_Controller{
 		foreach ($list_dosen_ketua as $key => $dosen) {
 			$dosen_id[] = $dosen->id;
 		}
+
+		// dosen 2, 4, 5
 		switch (count($peminatan)) {
 			case 2:
 				$list_dosen = $this->m_dosen->dosen_berdasarkan_peminatan( $peminatan[1], $dosen_id[0], $dosen_id[1] )->result();
@@ -215,8 +217,6 @@ class Perhitungan extends CI_Controller{
 				$list_dosen = $this->m_dosen->dosen_berdasarkan_peminatan( $peminatan[0], $dosen_id[0], $dosen_id[1] )->result();
 				break;
 		}
-		// dosen 2, 4, 5
-		$list_dosen = $this->m_dosen->dosen_berdasarkan_peminatan( $peminatan, NULL, $dosen_id[0], $dosen_id[1] )->result();
 
 		// urut dosen
 		$data['score'] = $score;
