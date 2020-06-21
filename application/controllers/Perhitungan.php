@@ -169,18 +169,17 @@ class Perhitungan extends CI_Controller{
 		// die;
 
 
-		asort($sortedArray);
+		arsort($sortedArray);
 
 		$time_end = microtime(true);
 		$time = $time_end - $time_start;
-
 		// echo "<br /><br />Search time is : <b> ".round($time,2)." microseconds</b>";
 		// echo "<br />Total documents retrieved: <b>".count($sortedArray)."</b>";
 		// echo json_encode($sortedArray);
 		// die;
 		foreach ($sortedArray as $key=>$val)
 		{
-			$peminatan = $key;
+			$peminatan[] = $key;
 			$score[] = number_format($finalArray[$key]['bm25_score'],2) . ' -> ' . $key . ' --  ';
 
 			// Menampilkan Hasil dari BM25 (Kata Dasar)
@@ -198,10 +197,23 @@ class Perhitungan extends CI_Controller{
 		// echo "<br>";
 
 		// dosen pembimbing 1, penguji 1
-		$keterangan = "Lektor";
-		$list_dosen_ketua = $this->m_dosen->dosen_berdasarkan_peminatan( $peminatan, $keterangan )->result();
+		$list_dosen_ketua = $this->m_dosen->dosen_ketua( $peminatan[0] )->result();
 		foreach ($list_dosen_ketua as $key => $dosen) {
 			$dosen_id[] = $dosen->id;
+		}
+		switch (count($peminatan)) {
+			case 2:
+				$list_dosen = $this->m_dosen->dosen_berdasarkan_peminatan( $peminatan[1], $dosen_id[0], $dosen_id[1] )->result();
+				break;
+			case 3:
+				foreach ($peminatan as $key=>$val)
+				{
+					$list_dosen[] = $this->m_dosen->dosen_berdasarkan_peminatan( $val, $dosen_id[0], $dosen_id[1] )->row();					
+				}
+				break;
+			default:
+				$list_dosen = $this->m_dosen->dosen_berdasarkan_peminatan( $peminatan[0], $dosen_id[0], $dosen_id[1] )->result();
+				break;
 		}
 		// dosen 2, 4, 5
 		$list_dosen = $this->m_dosen->dosen_berdasarkan_peminatan( $peminatan, NULL, $dosen_id[0], $dosen_id[1] )->result();

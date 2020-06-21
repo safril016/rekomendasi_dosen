@@ -16,20 +16,28 @@
  		return $this->db->get('tb_dosen');
  	}
 
-	public function dosen_berdasarkan_peminatan( $peminatan, $keterangan = NULL, $dosen1 = NULL, $dosen2 = NULL )
+	public function dosen_berdasarkan_peminatan( $peminatan, $dosen1 = NULL, $dosen2 = NULL )
  	{
 		$this->db->select('*');
 		$this->db->where('tb_dosen.kategori', $peminatan);
 		$this->db->order_by('RAND()');
 
-		if( $keterangan ){
+		$this->db->where('tb_dosen.id !=', $dosen1);
+		$this->db->where('tb_dosen.id !=', $dosen2);
+		$this->db->limit(3);
+
+ 		return $this->db->get('tb_dosen');
+	}
+
+	public function dosen_ketua( $peminatan, $keterangan = "Lektor" )
+ 	{
+		$this->db->select('*');
+		$this->db->where('tb_dosen.kategori', $peminatan);
+		$this->db->order_by('RAND()');
+
+		if($keterangan != "")
 			$this->db->where('tb_dosen.keterangan', $keterangan);
-			$this->db->limit(2);
-		}else {
-			$this->db->where('tb_dosen.id !=', $dosen1);
-			$this->db->where('tb_dosen.id !=', $dosen2);
-			$this->db->limit(3);
-		}
+		$this->db->limit(2);
 
  		return $this->db->get('tb_dosen');
 	}
